@@ -5,7 +5,7 @@ Preview: https://streamable.com/lzyz91
 ## Features:
 - Created using alt:V TextLabels.
 - Place graffiti almost on every wall from the map.
-- You can use every color & adding fonts is easy.
+- You can use hex colors & adding fonts is easy.
 
 ### Known Problems:
 - The spray can is not attached correctly to the player's hand. You will need to adjust the values and find the perfect one.
