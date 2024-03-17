@@ -4,7 +4,7 @@ Preview: https://streamable.com/lzyz91
 
 ## Features:
 - Created using alt:V TextLabels.
-- Place graffiti almost on every wall from the map.
+- Place graffiti on almost every wall from the map.
 - You can use hex colors & adding fonts is easy.
 
 ### Known Problems:
