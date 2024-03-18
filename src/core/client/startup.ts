@@ -89,20 +89,18 @@ alt.on('keyup', (key: alt.KeyCode) => {
 async function drawGraffiti(graffitiText: string, graffitiSize: number, hexColor: string, graffitiCoord: alt.Vector3, graffitiRotation: alt.Vector3) {
     let ptxDict = "scr_recartheft";
     let ptxName = "scr_wheel_burnout";
-    let playerHeading = native.getEntityHeading(alt.Player.local);
-    let sprayPos = new alt.Vector3(0.052, 0.041, -0.06);
-    let sprayRot = new alt.Vector3(33.0, 38.0, 0.0).toRadians();
+    let sprayPos = new alt.Vector3(0.07, 0.03, -0.07);
+    let sprayRot = new alt.Vector3(15, 45, 10);
 
-    let sprayObject = new alt.LocalObject('ng_proc_spraycan01b', alt.Player.local.pos, alt.Player.local.rot, false);
-    sprayObject.toggleCollision(false, true);
-
+    let sprayObject = new alt.LocalObject('ng_proc_spraycan01b', new alt.Vector3(0, 0, 0), new alt.Vector3(0, 0, 0), false);
     sprayObject.attachToEntity(
-        alt.Player.local, 
+        alt.Player.local,
         native.getPedBoneIndex(alt.Player.local, 57005),
         sprayPos,
-        sprayRot,
+        sprayRot.toRadians(),
         true,
-        false, false
+        false,
+        true
     );
 
     await alt.Utils.requestAnimDict('anim@amb@business@weed@weed_inspecting_lo_med_hi@');
@@ -140,24 +138,6 @@ async function drawGraffiti(graffitiText: string, graffitiSize: number, hexColor
     sprayingGraffiti.faceCamera = false;
 
     particleInterval = alt.setInterval(async () => {
-        let fwdVector = native.getEntityForwardVector(alt.Player.local);
-        let ptxCoords = native.getEntityCoords(alt.Player.local, true).add(fwdVector.mul(0.5)).add(0.0, 0.0, -0.5);
-
-        native.useParticleFxAsset(ptxDict);
-        native.setParticleFxNonLoopedColour(rgbaColor.r / 255, rgbaColor.g / 255, rgbaColor.b / 255);
-        
-        native.startNetworkedParticleFxNonLoopedAtCoord(
-            ptxName,
-            ptxCoords.x,
-            ptxCoords.y,
-            ptxCoords.z + 2,
-            0,
-            0,
-            playerHeading,
-            0.7,
-            false, false, false, false
-        );
-
         if (alphaValue === 255) {
             alt.clearInterval(particleInterval);
             particleInterval = null;
@@ -172,6 +152,25 @@ async function drawGraffiti(graffitiText: string, graffitiSize: number, hexColor
             drawSpray(graffitiText, graffitiSize, hexColor, graffitiCoord, graffitiRotation);
             return;
         };
+
+        let fwdVector = native.getEntityForwardVector(alt.Player.local);
+        let ptxCoords = native.getEntityCoords(alt.Player.local, true).add(fwdVector.mul(0.5)).add(0.0, 0.0, -0.5);
+        let playerHeading = native.getEntityHeading(alt.Player.local);
+
+        native.useParticleFxAsset(ptxDict);
+        native.setParticleFxNonLoopedColour(rgbaColor.r / 255, rgbaColor.g / 255, rgbaColor.b / 255);
+        
+        native.startNetworkedParticleFxNonLoopedAtCoord(
+            ptxName,
+            ptxCoords.x,
+            ptxCoords.y,
+            ptxCoords.z + 1.5,
+            0,
+            0,
+            playerHeading,
+            0.5,
+            false, false, false, false
+        );
 
         if (!sprayingGraffiti.valid) return;
 
@@ -204,9 +203,9 @@ function getRaycast() {
     let cameraRotation = native.getFinalRenderedCamRot(2);
     let fwdVector = getDirectionFromRotation(cameraRotation);
     let frontOf = new alt.Vector3(
-        (startPosition.x + (fwdVector.x * 4)), 
-        (startPosition.y + (fwdVector.y * 4)), 
-        (startPosition.z + (fwdVector.z * 4))
+        (startPosition.x + (fwdVector.x * 10)), 
+        (startPosition.y + (fwdVector.y * 10)), 
+        (startPosition.z + (fwdVector.z * 10))
     );
 
     let raycastTest = native.startExpensiveSynchronousShapeTestLosProbe(native.getGameplayCamCoord().x, native.getGameplayCamCoord().y, native.getGameplayCamCoord().z, frontOf.x, frontOf.y, frontOf.z, -1, alt.Player.local, 4);
